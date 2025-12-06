@@ -12,20 +12,9 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_CEC_POSTURE_GETTER_SCALE", CallingConvention = CallingConvention.Cdecl)]
         internal static extern float DELib_ECPosture_Getter_Scale(IntPtr posture);
 
-        [DllImport("Y7Internal.dll", EntryPoint = "LIB_CEC_POSTURE_GETTER_BONEMESH", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr DELib_ECPosture_Getter_BoneMesh(IntPtr posture);
-
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_CEC_POSTURE_SETTER_SCALE", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_ECPosture_Setter_Scale(IntPtr posture, float val);
 
-
-        public IntPtr BoneMesh
-        {
-            get
-            {
-                return DELib_ECPosture_Getter_BoneMesh(Pointer);
-            }
-        }
 
         public float Scale
         {
