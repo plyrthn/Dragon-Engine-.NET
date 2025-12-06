@@ -679,14 +679,4 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\Yakuza Stuff\YK2Coop\packages\Fody.6.5.5\build\Fody.targets" Condition="Exists('..\..\Yakuza Stuff\YK2Coop\packages\Fody.6.5.5\build\Fody.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\Yakuza Stuff\YK2Coop\packages\Fody.6.5.5\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\Yakuza Stuff\YK2Coop\packages\Fody.6.5.5\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets'))" />
-  </Target>
-  <Import Project="..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets" Condition="Exists('..\..\Yakuza Stuff\YK2Coop\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" />
 </Project>
