@@ -32,6 +32,12 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_GET_INFO", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr DELib_Fighter_GetInfo(IntPtr fighterPtr);
 
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_GET_COMBO_NUM", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int DELib_Fighter_GetComboNum(IntPtr fighterPtr);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_GET_COLLISION", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELib_Fighter_GetCollision(IntPtr fighterPtr);
+
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_SCOMMANDAI", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr DELib_Fighter_GetCommandAI(IntPtr fighterPtr);
 
@@ -111,7 +117,7 @@ namespace DragonEngineLibrary
         internal static extern IntPtr DELib_Fighter_WeaponManager(IntPtr fighterPtr);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_HAS_EX_EFFECT", CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.U1)]
+        [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool DELib_Fighter_HasExEffect(IntPtr fighterPtr, int id);
 
         public Character Character { get { return new EntityHandle<Character>(CharacterUID); } }
@@ -162,6 +168,15 @@ namespace DragonEngineLibrary
             return Character.GetBattleStatus();
         }
 
+        public int GetComboNum()
+        {
+            return DELib_Fighter_GetComboNum(_ptr);
+        }
+        public ECBattleCollision GetCollision()
+        {
+            return new ECBattleCollision() { Pointer = DELib_Fighter_GetCollision(_ptr) };
+        }
+
         ///<summary>Get the weapon held at the specified attachment point of this character.</summary>
         public Weapon GetWeapon(AttachmentCombinationID attachment)
         {
@@ -201,7 +216,7 @@ namespace DragonEngineLibrary
         /// </summary>
         public bool IsDown()
         {
-         //   return DELib_Fighter_IsDown(_ptr);
+            //   return DELib_Fighter_IsDown(_ptr);
             return Character.HumanModeManager.IsDown();
             //  return Character.IsRagdoll();
             //  return inf.is_stand_up_;

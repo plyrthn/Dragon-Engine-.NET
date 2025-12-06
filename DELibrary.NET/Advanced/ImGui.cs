@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.IO;
 
 
 //Advanced because the mere use of this can introduce decent amount of bugs
@@ -24,6 +25,12 @@ namespace DragonEngineLibrary.Advanced
 
         public static void Init()
         {
+            string libPath = Path.Combine(Library.Root, "Y7Internal.dll");
+            string cimguiPath = Path.Combine(new FileInfo(libPath).Directory.FullName, "cimgui.dll");
+
+            if (File.Exists(cimguiPath))
+                DragonEngine.LoadLibrary(cimguiPath);
+
 #if !IW_AND_UP
             DXHook.Init();
 #endif

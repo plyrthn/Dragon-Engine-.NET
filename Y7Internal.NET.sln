@@ -18,6 +18,8 @@ Global
 		Infinite Wealth Release|x64 = Infinite Wealth Release|x64
 		Kiwami 2 Debug|x64 = Kiwami 2 Debug|x64
 		Kiwami 2 Release|x64 = Kiwami 2 Release|x64
+		Lost Judgment Debug|x64 = Lost Judgment Debug|x64
+		Lost Judgment Release|x64 = Lost Judgment Release|x64
 		Release|x64 = Release|x64
 		Yakuza 7 Release|x64 = Yakuza 7 Release|x64
 		YLAD Debug|x64 = YLAD Debug|x64
@@ -38,6 +40,10 @@ Global
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Kiwami 2 Debug|x64.Build.0 = Debug|x64
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Kiwami 2 Release|x64.ActiveCfg = Release|x64
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Kiwami 2 Release|x64.Build.0 = Release|x64
+		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Lost Judgment Debug|x64.ActiveCfg = Lost Judgment Debug|x64
+		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Lost Judgment Debug|x64.Build.0 = Lost Judgment Debug|x64
+		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Lost Judgment Release|x64.ActiveCfg = Lost Judgment Release|x64
+		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Lost Judgment Release|x64.Build.0 = Lost Judgment Release|x64
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Release|x64.ActiveCfg = Release|Any CPU
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Release|x64.Build.0 = Release|Any CPU
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.Yakuza 7 Release|x64.ActiveCfg = YLAD Release|x64
@@ -60,6 +66,10 @@ Global
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Debug|x64.Build.0 = Debug|Any CPU
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Release|x64.ActiveCfg = Release|Any CPU
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Release|x64.Build.0 = Release|Any CPU
+		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Debug|x64.ActiveCfg = Infinite Wealth Debug|Any CPU
+		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Debug|x64.Build.0 = Infinite Wealth Debug|Any CPU
+		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Release|x64.ActiveCfg = Release|Any CPU
+		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Release|x64.Build.0 = Release|Any CPU
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Release|x64.ActiveCfg = Release|Any CPU
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Release|x64.Build.0 = Release|Any CPU
 		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Yakuza 7 Release|x64.ActiveCfg = YLAD Release|Any CPU
@@ -82,6 +92,10 @@ Global
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Debug|x64.Build.0 = Debug|Any CPU
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Release|x64.ActiveCfg = Release|Any CPU
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Release|x64.Build.0 = Release|Any CPU
+		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Debug|x64.ActiveCfg = Infinite Wealth Debug|x64
+		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Debug|x64.Build.0 = Infinite Wealth Debug|x64
+		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Release|x64.ActiveCfg = Release|Any CPU
+		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Release|x64.Build.0 = Release|Any CPU
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Release|x64.ActiveCfg = Release|Any CPU
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Release|x64.Build.0 = Release|Any CPU
 		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Yakuza 7 Release|x64.ActiveCfg = Release|Any CPU

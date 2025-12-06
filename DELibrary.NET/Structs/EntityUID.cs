@@ -19,5 +19,14 @@ namespace DragonEngineLibrary
 
         [FieldOffset(0x8)]
         public ushort KindGroupBits;
+
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ENTITY_UID_GENERATE_SERIAL", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GenerateSerial();
+
+        public override string ToString()
+        {
+            return "Serial: " + Serial + " Kind: " + (ushort)Kind + " User: " + User;
+        }
     }
 }

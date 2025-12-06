@@ -27,7 +27,7 @@ namespace DragonEngineLibrary
         public float fSkillCriticalRatio;
         public float fSkillAddCriticalRatio;
         public float fItemAddCriticalRatio;
-        public fixed int attr[2];
+        public long attr;
         public uint base_attack;
         public uint sp_attack;
         public uint sp_heal;

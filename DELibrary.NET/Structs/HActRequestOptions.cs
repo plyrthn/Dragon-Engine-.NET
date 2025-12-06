@@ -3,8 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace DragonEngineLibrary
 {
+#if YLAD_AND_UP
 
-#if YLAD
+#if YLAD || LJ
     [StructLayout(LayoutKind.Explicit, Pack = 16, Size = 0x1120)]
 #endif
 #if GAIDEN_AND_UP
@@ -26,7 +27,7 @@ namespace DragonEngineLibrary
         internal static extern void DELib_HActRequestOptions_RegisterWeapon2(ref HActRequestOptions opt, AuthAssetReplaceID id, uint wep);
 
 
-#if YLAD
+#if YLAD || LJ
         [FieldOffset(0x0)] public DynamicsMatrix base_mtx;
         [FieldOffset(0x70)] public DynamicsMatrix base_mtx_sub;
         [FieldOffset(0xE0)] public TalkParamID id;
@@ -115,4 +116,5 @@ namespace DragonEngineLibrary
             DELib_HActRequestOptions_RegisterWeapon2(ref this, id, wep.Unit.UID);
         }
     }
+#endif
 }

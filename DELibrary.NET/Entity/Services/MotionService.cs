@@ -62,5 +62,9 @@ namespace DragonEngineLibrary.Service
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_CSERVICE_MOTION_GET_BEP_ID", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetBepID(MotionID motion);
+
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_CSERVICE_MOTION_FIND_GMT_ID", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint FindGmtID(string gmtName);
     }
 }

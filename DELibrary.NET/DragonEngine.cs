@@ -162,7 +162,7 @@ namespace DragonEngineLibrary
         public static extern int MessageBox(IntPtr h, string m, string c, int type);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr LoadLibrary(string libname);
+        internal static extern IntPtr LoadLibrary(string libname);
 
         /// <summary>
         /// Initialize Dragon Engine library. Important for it to properly function.
@@ -207,10 +207,12 @@ namespace DragonEngineLibrary
 
             DragonEngine.Log("Library load time: " + initTime.Elapsed.TotalSeconds);
 
+            /*
             string cimguiPath = Path.Combine(new FileInfo(libPath).Directory.FullName, "cimgui.dll");
 
             if (File.Exists(cimguiPath))
                 LoadLibrary(cimguiPath);
+            */
 
             DragonEngine.Log("Y7Internal loaded. Going to initialize");
 
@@ -385,7 +387,7 @@ namespace DragonEngineLibrary
                 foreach (CustomAttributeData dat in loadedAssembly.CustomAttributes)
                     if (dat.AttributeType.FullName == typeof(DEModInfo).FullName) // type comparing didnt work. so we compare names
                     {
-                        ProcessDEMod(dat.ConstructorArguments);
+                        ProcessDEMod(new FileInfo(path).Directory.FullName, dat.ConstructorArguments);
                         return true;
                     }
 
@@ -412,7 +414,7 @@ namespace DragonEngineLibrary
             }
         }
 
-        internal static void ProcessDEMod(IList<CustomAttributeTypedArgument> modInfo)
+        internal static void ProcessDEMod(string dir, IList<CustomAttributeTypedArgument> modInfo)
         {
             string modName = (string)modInfo[0].Value;
             Type modType = (Type)modInfo[1].Value;
@@ -426,10 +428,13 @@ namespace DragonEngineLibrary
 
             if (modType.BaseType.FullName == "DragonEngineLibrary.DragonEngineMod")
             {
-                object createdObj = Activator.CreateInstance(modType);
+               DragonEngineMod createdObj = (DragonEngineMod) Activator.CreateInstance(modType);
 
                 if (createdObj != null)
-                    modType.GetMethod("OnModInit", BindingFlags.Public | BindingFlags.Instance).Invoke(createdObj, null);
+                {
+                    createdObj.ModPath = dir;
+                    createdObj.OnModInit();
+                }
                 else
                     Log("Mod class initialization failed!");
             }
@@ -444,10 +449,7 @@ namespace DragonEngineLibrary
     {
         public virtual string ModPath
         {
-            get
-            {
-                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            }
+            get; internal set;
         }
 
         public virtual void OnModInit()

@@ -12,21 +12,15 @@ namespace DragonEngineLibrary
         [FieldOffset(0)]
         public ushort set_;
         [FieldOffset(2)]
-        public ushort cmd;
+        public short cmd;
 
-        public FighterCommandID(ushort set, ushort cmd)
+        public FighterCommandID(ushort set, short cmd)
         {
             set_ = set;
             this.cmd = cmd;
         }
 
-        public FighterCommandID(ushort set, short cmd)
-        {
-            set_ = set;
-            this.cmd = (ushort)cmd;
-        }
-
-        public FighterCommandID(BattleCommandSetID set, ushort cmd)
+        public FighterCommandID(BattleCommandSetID set, short cmd)
         {
             set_ = (ushort)set;
             this.cmd = cmd;

@@ -203,6 +203,11 @@ namespace DragonEngineLibrary
             return DELibrary_EntityBase_GetGlobalEntityFromUID(uid.UID);
         }
 
+        public static EntityHandle<EntityBase> GetGlobalEntityFromUID(ulong uid)
+        {
+            return DELibrary_EntityBase_GetGlobalEntityFromUID(uid);
+        }
+
         public static EntityHandle<EntityBase> GetOnlyOneEntity(uint ID)
         {
             return DELibrary_EntityBase_GetOnlyOneEntity(ID);

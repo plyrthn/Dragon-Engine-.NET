@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace DragonEngineLibrary
 {
+#if YLAD_AND_UP
     public static class HActManager
     {
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_HACTMANAGER_GETTER_POINTER", CallingConvention = CallingConvention.Cdecl)]
@@ -93,4 +94,5 @@ namespace DragonEngineLibrary
             return DELib_HActManager_FindRange(pos, rangeType, ref outInf);
         }
     }
+#endif
 }

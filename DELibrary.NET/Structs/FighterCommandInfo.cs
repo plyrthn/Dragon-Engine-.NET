@@ -9,7 +9,12 @@ namespace DragonEngineLibrary
 {
     public struct FighterCommandInfo
     {
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string Id;
+        public IntPtr IdPtr;
+        public string Id { get { return Marshal.PtrToStringAnsi(IdPtr); } }
+
+        //Yes... This is very bad
+        //But it works, damn it!
+        public IntPtr AnimationTableStart { get {  return IdPtr + Id.Length + 1; } }
+        public string Animation { get { return Marshal.PtrToStringAnsi (AnimationTableStart); } } 
     }
 }

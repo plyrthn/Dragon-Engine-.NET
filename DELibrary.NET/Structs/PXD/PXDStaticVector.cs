@@ -23,6 +23,12 @@ namespace DragonEngineLibrary
             return arr[idx];
         }
 
+        public T ElementAt<T>(int idx) where T: unmanaged
+        {
+            T* arr = (T*)MPElement;
+            return arr[idx];
+        }
+
         public uint[] GetArrayU32()
         {
             uint[] array = new uint[ElementSize];

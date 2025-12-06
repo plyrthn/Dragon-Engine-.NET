@@ -37,6 +37,13 @@ namespace DragonEngineLibrary
         public byte[] padding = new byte[0x1F0];
     }
 
+#if YK2
+    public unsafe struct CharacterAttributes
+    {
+
+    }
+#endif
+
 #if YLAD
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct CharacterAttributes
@@ -103,6 +110,37 @@ namespace DragonEngineLibrary
         [FieldOffset(0x28C)] public Player.ID player_id;
         [FieldOffset(0x290)] public Player.ID dmy_player_id;
         [FieldOffset(0x294)] public FilePortCategory file_port;     
+    }
+#endif
+
+#if LJ
+    [StructLayout(LayoutKind.Explicit)]
+    public unsafe struct CharacterAttributes
+    {
+        [FieldOffset(0x0)] public Vector4 InitPos;
+        [FieldOffset(0x10)][MarshalAs(UnmanagedType.ByValArray, SizeConst = 512)] public byte[] dispose_data;
+        [FieldOffset(0x210)] public CharacterID chara_id;
+        [FieldOffset(0x214)] public CharacterModelID model_id;
+        [FieldOffset(0x218)] public CharacterBoneType bone_type;
+        [FieldOffset(0x21C)] public CharacterAnimalKind animal_kind;
+        [FieldOffset(0x220)] public CharacterBagType bag_type;
+        [FieldOffset(0x224)] public BattleControlType ctrl_type;
+        [FieldOffset(0x228)] public BattleRPGEnemyID enemy_id;
+        [FieldOffset(0x22C)] public BattleCommandSetID command_set_id;
+        [FieldOffset(0x230)] public CharacterNPCSetup npc_setup;
+
+        [FieldOffset(0x234)][MarshalAs(UnmanagedType.ByValArray, SizeConst = 83)] public byte[] unk;
+
+        [FieldOffset(0x287)][MarshalAs(UnmanagedType.U1)] public bool is_player;
+        [FieldOffset(0x288)][MarshalAs(UnmanagedType.U1)] public bool is_supporter;
+        [FieldOffset(0x289)][MarshalAs(UnmanagedType.U1)] public bool is_npc;
+        [FieldOffset(0x28A)][MarshalAs(UnmanagedType.U1)] public bool is_soldier;
+
+        [FieldOffset(0x28b)][MarshalAs(UnmanagedType.ByValArray, SizeConst = 21)] public byte[] unk2;
+
+        [FieldOffset(0x2A0)] public Player.ID player_id;
+        [FieldOffset(0x2A4)] public Player.ID dmy_player_id;
+        [FieldOffset(0x294)] public FilePortCategory file_port;
     }
 #endif
 

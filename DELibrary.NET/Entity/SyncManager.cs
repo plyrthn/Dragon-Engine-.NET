@@ -7,7 +7,7 @@ namespace DragonEngineLibrary
     {
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_SYNC_MANAGER_REQUEST", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void DELib_FighterSyncManager_Request(ushort set, ushort attack, uint attacker, uint victim, bool colCheck = false);
+        internal static extern void DELib_FighterSyncManager_Request(ushort set, short attack, uint attacker, uint victim, bool colCheck = false);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_SYNC_MANAGER_GET_PLAYING_DATA", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr DELib_FighterSyncManager_GetPlayingData(int serial);

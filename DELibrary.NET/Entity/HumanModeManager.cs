@@ -13,6 +13,10 @@ namespace DragonEngineLibrary
         [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool DELib_HumanModeManager_ToReady(IntPtr manager, bool no_blend);
 
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_HUMANMODEMANAGER_TODAMAGEREACTION", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DELib_HumanModeManager_ToDamageReaction(IntPtr manager, in BattleDamageInfo dam);
+
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_HUMANMODEMANAGER_TO", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr DELib_HumanModeManager_To(IntPtr manager, IntPtr mode);
 
@@ -240,6 +244,8 @@ namespace DragonEngineLibrary
         public void ToPickup(AssetUnit asset) => DELib_HumanModeManager_ToPickup(Pointer, asset.Pointer);
         ///<summary>Equip a weapon.</summary>
         public void ToBattou(AssetID asset) => DELib_HumanModeManager_ToBattou(Pointer, asset);
+
+        public void ToDamageReaction(in BattleDamageInfo damage) => DELib_HumanModeManager_ToDamageReaction(Pointer, in damage);
 
         ///<summary>Are we knocked down?</summary>
         public bool IsDown() { return DELib_HumanModeManager_IsDown(Pointer); }
