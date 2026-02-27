@@ -1,13 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DELibrary.NET", "DELibrary.NET\DELibrary.NET.csproj", "{9900112C-25D6-427D-846A-A90E31CF8FE3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImGui.NET", "ImGui.NET-master\ImGui.NET-master\src\ImGui.NET\ImGui.NET.csproj", "{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "Projects\TestProject\TestProject.csproj", "{920EF6CA-743B-4784-8BBE-42BD9115FD4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,58 +48,6 @@ Global
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.YLAD Debug|x64.Build.0 = YLAD Debug|x64
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.YLAD Release|x64.ActiveCfg = YLAD Release|x64
 		{9900112C-25D6-427D-846A-A90E31CF8FE3}.YLAD Release|x64.Build.0 = YLAD Release|x64
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Debug|x64.Build.0 = Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Gaiden Debug|x64.ActiveCfg = Gaiden Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Gaiden Debug|x64.Build.0 = Gaiden Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Gaiden Release|x64.ActiveCfg = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Gaiden Release|x64.Build.0 = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Infinite Wealth Debug|x64.ActiveCfg = Infinite Wealth Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Infinite Wealth Debug|x64.Build.0 = Infinite Wealth Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Infinite Wealth Release|x64.ActiveCfg = Infinite Wealth Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Infinite Wealth Release|x64.Build.0 = Infinite Wealth Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Debug|x64.ActiveCfg = Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Debug|x64.Build.0 = Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Release|x64.ActiveCfg = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Kiwami 2 Release|x64.Build.0 = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Debug|x64.ActiveCfg = Infinite Wealth Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Debug|x64.Build.0 = Infinite Wealth Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Release|x64.ActiveCfg = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Lost Judgment Release|x64.Build.0 = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Release|x64.ActiveCfg = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Release|x64.Build.0 = Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Yakuza 7 Release|x64.ActiveCfg = YLAD Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.Yakuza 7 Release|x64.Build.0 = YLAD Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.YLAD Debug|x64.ActiveCfg = YLAD Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.YLAD Debug|x64.Build.0 = YLAD Debug|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.YLAD Release|x64.ActiveCfg = YLAD Release|Any CPU
-		{A99195D9-AE49-41F5-8FF0-C7D9EEF9C3AB}.YLAD Release|x64.Build.0 = YLAD Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Debug|x64.Build.0 = Debug|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Gaiden Debug|x64.ActiveCfg = Gaiden Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Gaiden Debug|x64.Build.0 = Gaiden Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Gaiden Release|x64.ActiveCfg = Release|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Gaiden Release|x64.Build.0 = Release|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Infinite Wealth Debug|x64.ActiveCfg = Infinite Wealth Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Infinite Wealth Debug|x64.Build.0 = Infinite Wealth Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Infinite Wealth Release|x64.ActiveCfg = Infinite Wealth Release|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Infinite Wealth Release|x64.Build.0 = Infinite Wealth Release|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Debug|x64.ActiveCfg = Debug|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Debug|x64.Build.0 = Debug|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Release|x64.ActiveCfg = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Kiwami 2 Release|x64.Build.0 = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Debug|x64.ActiveCfg = Infinite Wealth Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Debug|x64.Build.0 = Infinite Wealth Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Release|x64.ActiveCfg = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Lost Judgment Release|x64.Build.0 = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Release|x64.ActiveCfg = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Release|x64.Build.0 = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Yakuza 7 Release|x64.ActiveCfg = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.Yakuza 7 Release|x64.Build.0 = Release|Any CPU
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.YLAD Debug|x64.ActiveCfg = YLAD Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.YLAD Debug|x64.Build.0 = YLAD Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.YLAD Release|x64.ActiveCfg = YLAD Debug|x64
-		{920EF6CA-743B-4784-8BBE-42BD9115FD4D}.YLAD Release|x64.Build.0 = YLAD Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
