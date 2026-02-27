@@ -15,13 +15,13 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_HUMANMODE_GET_COMMAND_ID", CallingConvention = CallingConvention.Cdecl)]
         internal static extern FighterCommandID DELib_HumanMode_GetCommandID(IntPtr mode);
 
-        public IntPtr m_pointer;
+        public IntPtr Pointer;
 
         public string ModeName
         {
             get
             {
-                IntPtr strPtr = DELib_HumanMode_Getter_ModeName(m_pointer);
+                IntPtr strPtr = DELib_HumanMode_Getter_ModeName(Pointer);
 
                 if (strPtr == IntPtr.Zero)
                     return "";
@@ -34,13 +34,13 @@ namespace DragonEngineLibrary
         {
             get
             {
-                return new HumanModeManager() { Pointer = DELib_HumanMode_Getter_Parent(m_pointer) };
+                return new HumanModeManager() { Pointer = DELib_HumanMode_Getter_Parent(Pointer) };
             }
         }
 
         public FighterCommandID GetCommandID()
         {
-            return DELib_HumanMode_GetCommandID(m_pointer);
+            return DELib_HumanMode_GetCommandID(Pointer);
         }
     }
 }

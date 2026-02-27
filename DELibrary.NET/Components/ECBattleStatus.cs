@@ -95,11 +95,31 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_GETTER_HACT", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint DELibrary_ECBattleStatus_Getter_Hact(IntPtr battlestatus);
 
+#if TURN_BASED_GAME
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_REMOVE_EX_EFFECT", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint DELibrary_ECBattleStatus_RemoveExEffect(IntPtr battlestatus, uint effectID, bool dontShowMsg, bool preExec);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_ADD_EX_EFFECT", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELibrary_ECBattleStatus_AddExEffect(IntPtr battlestatus, IntPtr in_dat, bool dontShowMsg, bool preExec);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_GETTER_LIGHT_COMMAND", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELibrary_ECBattleStatus_Getter_LightCommand(IntPtr battlestatus);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_GETTER_CURRENT_COMMAND", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELibrary_ECBattleStatus_Getter_CurrentCommand(IntPtr battlestatus);
+#endif
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_SETTER_ATTACK_SPEED_RATIO", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELibrary_ECBattleStatus_Setter_AttackSpeedRatio(IntPtr battlestatus, float ratio);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_SETTER_REACT_LEVEL_DOWN", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELibrary_ECBattleStatus_SetDamageReactReduce(IntPtr battlestatus, bool reduce);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_SETTER_ATTACK_ARMOR", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern IntPtr DELibrary_ECBattleStatus_SetAttackArmor(IntPtr battlestatus, bool enabled);
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECBATTLESTATUS_CHANGE_ARTS_TABLE_ENEMY", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DELibrary_ECBattleStatus_ChangeArtsTableEnemy(IntPtr battlestatus, uint id);
 
         public long HPLimit
         {
@@ -220,6 +240,42 @@ namespace DragonEngineLibrary
             }
         }
 
+#if TURN_BASED_GAME
+        public IntPtr LightCommand
+        {
+            get
+            {
+                return DELibrary_ECBattleStatus_Getter_LightCommand(Pointer);
+            }
+        }
+
+        public IntPtr CurrentCommand
+        {
+            get
+            {
+                return DELibrary_ECBattleStatus_Getter_CurrentCommand(Pointer);
+            }
+        }
+#endif
+
+        public float AttackSpeedRatio
+        {
+            set
+            {
+                DELibrary_ECBattleStatus_Setter_AttackSpeedRatio(Pointer, value);
+            }
+        }
+
+        public void SetAttackArmor(bool armor)
+        {
+            DELibrary_ECBattleStatus_SetAttackArmor(_objectAddress, armor);
+        }
+
+        public void SetDamageReactReduce(bool reduce)
+        {
+            DELibrary_ECBattleStatus_SetDamageReactReduce(_objectAddress, reduce);
+        }
+
         ///<summary>Set current alive HP?? What??</summary>
         public void SetAliveHPCurrent(long hp)
         {
@@ -273,6 +329,11 @@ namespace DragonEngineLibrary
         public uint GetArts()
         {
             return DELibrary_ECBattleStatus_Get_Arts(Pointer);
+        }
+        
+        public void ChangeArtsTableEnemy(uint arts)
+        {
+            DELibrary_ECBattleStatus_ChangeArtsTableEnemy(_objectAddress, arts);
         }
 
         public void AddDamageInfo(BattleDamageInfo inf)

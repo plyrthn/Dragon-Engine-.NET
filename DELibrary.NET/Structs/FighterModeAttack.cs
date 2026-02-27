@@ -15,7 +15,7 @@ namespace DragonEngineLibrary
         public static FighterModeAttack Create(HumanModeManager manager, FighterCommandID id)
         {
             FighterModeAttack obj = new FighterModeAttack();
-            obj.m_pointer =  DELib_FighterModeAttack_Create(manager.Pointer, id);
+            obj.Pointer =  DELib_FighterModeAttack_Create(manager.Pointer, id);
 
             return obj;
         }

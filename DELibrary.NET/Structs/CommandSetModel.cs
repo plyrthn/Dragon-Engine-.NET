@@ -9,7 +9,7 @@ namespace DragonEngineLibrary
         internal static extern void DELib_CommandSetModel_SetCommandSet(IntPtr model, uint type, BattleCommandSetID set);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_COMMANDSETMODEL_GETCOMMANDSET", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern uint DELib_CommandSetModel_GetCommandSet(IntPtr model);
+        internal static extern uint DELib_CommandSetModel_GetCommandSet(IntPtr model, int type);
 
         internal IntPtr _ptr;
 
@@ -18,9 +18,9 @@ namespace DragonEngineLibrary
             DELib_CommandSetModel_SetCommandSet(_ptr, type, set);
         }
 
-        public uint GetCommandset()
+        public uint GetCommandset(int type)
         {
-            return DELib_CommandSetModel_GetCommandSet(_ptr);
+            return DELib_CommandSetModel_GetCommandSet(_ptr, type);
         }
     }
 }
