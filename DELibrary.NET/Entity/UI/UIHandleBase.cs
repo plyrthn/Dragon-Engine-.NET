@@ -28,7 +28,7 @@ namespace DragonEngineLibrary
         internal static extern void DELib_UIHandleBase_SetHeight(ulong handle, float height);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_UI_HANDLE_CBASE_SET_TEXT", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void DELib_UIHandleBase_SetText(ulong handle, string txt);
+        internal static extern void DELib_UIHandleBase_SetText(ulong handle, IntPtr txtUtf8);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_UI_HANDLE_CBASE_SET_FRAME", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_UIHandleBase_SetFrame(ulong handle, float frame);
@@ -136,7 +136,25 @@ namespace DragonEngineLibrary
 
         public void SetText(string text)
         {
-            DELib_UIHandleBase_SetText(Handle,text);
+            if (string.IsNullOrEmpty(text))
+            {
+                IntPtr emptyPtr = Marshal.AllocHGlobal(1);
+                Marshal.WriteByte(emptyPtr, 0);
+                try { DELib_UIHandleBase_SetText(Handle, emptyPtr); }
+                finally { Marshal.FreeHGlobal(emptyPtr); }
+                return;
+            }
+            byte[] utf8 = System.Text.Encoding.UTF8.GetBytes(text + "\0");
+            IntPtr ptr = Marshal.AllocHGlobal(utf8.Length);
+            try
+            {
+                Marshal.Copy(utf8, 0, ptr, utf8.Length);
+                DELib_UIHandleBase_SetText(Handle, ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
         }
 
         public void SetFrame(float frame)
