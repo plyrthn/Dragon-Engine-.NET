@@ -173,7 +173,7 @@ namespace DragonEngineLibrary
         {
             get
             {
-                return new HumanMode() { m_pointer = DELib_HumanModeManager_Getter_CurrentMode(Pointer) };
+                return new HumanMode() { Pointer = DELib_HumanModeManager_Getter_CurrentMode(Pointer) };
             }
         }
 
@@ -181,7 +181,7 @@ namespace DragonEngineLibrary
         {
             get
             {
-                return new HumanMode() { m_pointer = DELib_HumanModeManager_Getter_NextMode(Pointer) };
+                return new HumanMode() { Pointer = DELib_HumanModeManager_Getter_NextMode(Pointer) };
             }
         }
 
@@ -193,7 +193,7 @@ namespace DragonEngineLibrary
         ///<summary>Don't use.</summary>
         public void To(HumanMode mode)
         {
-            DELib_HumanModeManager_To(Pointer, mode.m_pointer);
+            DELib_HumanModeManager_To(Pointer, mode.Pointer);
         }
 
         ///<summary>Execute a Fighter Command attack.</summary>

@@ -14,6 +14,8 @@ namespace DragonEngineLibrary
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_BATTLECOMMANDAI_SWITCHENEMYIDSET", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_BattleCommandAI_SwitchEnemyIDSet(IntPtr commandAI, uint id);
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_BATTLECOMMANDAI_REQUESTARTSCHANGE", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DELib_BattleCommandAI_RequestArtsChange(IntPtr commandAI, uint id);
 
         /// <summary>
         /// Owner of this AI.
@@ -41,6 +43,11 @@ namespace DragonEngineLibrary
         public void SwitchEnemyIDSet(uint id)
         {
             DELib_BattleCommandAI_SwitchEnemyIDSet(Pointer, id);
+        }
+
+        public void RequestArtsChange(uint id)
+        {
+            DELib_BattleCommandAI_RequestArtsChange(Pointer, id);
         }
     }
 }

@@ -104,6 +104,9 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_CALC_ROOT_MATRIX", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr DELib_Fighter_CalcRootMatrix(IntPtr fighterPtr);
 
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_GETLASTSAFETYPLAINAREA", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern Matrix4x4 DELib_Fighter_GetLastSafetyPlainArea(IntPtr fighterPtr);
+
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_FIGHTER_SETUPWEAPON", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_Fighter_SetupWeapon(IntPtr fighterPtr);
 
@@ -147,7 +150,7 @@ namespace DragonEngineLibrary
 
         public HumanMode HumanMode()
         {
-            return new HumanMode() { m_pointer = DELib_Fighter_HumanMode(_ptr) };
+            return new HumanMode() { Pointer = DELib_Fighter_HumanMode(_ptr) };
         }
 
         public WeaponManager WeaponManager()
@@ -382,6 +385,11 @@ namespace DragonEngineLibrary
             }
             else
                 return new Matrix4x4();
+        }
+
+        public Matrix4x4 GetLastSafetyPlainArea()
+        {
+            return DELib_Fighter_GetLastSafetyPlainArea(_ptr);
         }
 
 
