@@ -7,6 +7,7 @@ namespace DragonEngineLibrary
     {
         public IntPtr Pointer { get; internal set; }
 
+#if YLAD_AND_UP || YK2
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_ENTITY_COMPONENT_MAP_GET_COMPONENT", CallingConvention = CallingConvention.Cdecl)]
         private static extern uint DELib_EntityComponentMap_GetComponent(IntPtr componentmap, ECSlotID slot);
 
@@ -24,5 +25,6 @@ namespace DragonEngineLibrary
         {
             return DELib_EntityComponentMap_Erase(Pointer, slot);
         }
+#endif
     }
 }

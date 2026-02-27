@@ -25,6 +25,7 @@ namespace DragonEngineLibrary
         [return:MarshalAs(UnmanagedType.U1)]
         internal static extern bool DELib_Character_Base_IsRagdoll(IntPtr character_base);
 
+#if YK2 || YLAD || LJ || GAIDEN_AND_UP
         ///<summary>Information that was used to create the character.</summary>
         public CharacterAttributes Attributes
         {
@@ -39,6 +40,7 @@ namespace DragonEngineLibrary
                 return attributes;
             }
         }
+#endif
 
         ///<summary>The motion component of this character.</summary>
         public ECMotion GetMotion()
