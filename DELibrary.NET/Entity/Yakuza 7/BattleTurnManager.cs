@@ -87,6 +87,10 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_BATTLETURNMANAGER_GETTER_SELECTED_FIGHTER", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint DELib_BattleTurnManager_Getter_Selected_Fighter();
 
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_BATTLETURNMANAGER_SETTER_SELECTED_FIGHTER", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DELib_BattleTurnManager_Setter_Selected_Fighter(uint handle);
+
+
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_BATTLETURNMANAGER_PTR", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr Pointer();
 
@@ -183,6 +187,10 @@ namespace DragonEngineLibrary
             get
             {
                 return new EntityHandle<Character>(DELib_BattleTurnManager_Getter_Selected_Fighter());
+            }
+            set
+            {
+                DELib_BattleTurnManager_Setter_Selected_Fighter(value.UID);
             }
         }
 

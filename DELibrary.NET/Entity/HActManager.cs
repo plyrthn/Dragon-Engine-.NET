@@ -25,6 +25,10 @@ namespace DragonEngineLibrary
         internal static extern uint DELib_HActManager_RequestPreload(uint talkID);
 
 
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_HACTMANAGER_GETBATTLESAFETYHACTRANGE", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Matrix4x4 GetBattleSafetyHActRange();
+
+
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_HACTMANAGER_SKIP", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_HActManager_Skip();
 

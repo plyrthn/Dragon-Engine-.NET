@@ -69,6 +69,10 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECMOTION_GETTER_SYNC_SERIAL", CallingConvention = CallingConvention.Cdecl)]
         private static extern int DELib_ECMotion_Getter_SyncSerial(IntPtr motion);
 
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_ECMOTION_IS_VALID_TIMING", CallingConvention = CallingConvention.Cdecl)]
+        [return:MarshalAs(UnmanagedType.U1)]
+        private static extern bool DELib_ECMotion_Is_Valid_Timing(IntPtr motion, uint nodeID);
+
 
         ///<summary>Motion play info.</summary>
         public MotionPlayInfo PlayInfo
@@ -252,13 +256,7 @@ namespace DragonEngineLibrary
 
         public bool InTimingRange(uint nodeID)
         {
-            MotionPlayInfo inf = PlayInfo;
-            MotionService.TimingResult timing = MotionService.SearchTimingDetail(inf.tick_now_, BepID, nodeID);
-
-            if (!timing.IsValid())
-                return false;
-
-            return Frame >= timing.Start / 100 && Frame <= timing.End / 100;
+            return DELib_ECMotion_Is_Valid_Timing(Pointer, nodeID);
         }
 
         public bool InTimingRange(uint nodeID, uint tick)

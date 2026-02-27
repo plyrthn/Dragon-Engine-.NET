@@ -179,9 +179,11 @@ namespace DragonEngineLibrary
 
         public unsafe void SetMaterialColor(uint col)
         {
+#if !YLAD
             uint* colo = (uint*)GetControlBase().Pointer + 636;
             *colo = col;
             return;
+#endif
 
             DELib_UIHandleBase_SetMaterialColor2(Handle, col);
         }

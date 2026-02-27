@@ -6,7 +6,7 @@ namespace DragonEngineLibrary
     public class PadInputInfo
     {
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_IS_TIMING_PUSH", CallingConvention = CallingConvention.Cdecl)]
-        [return:MarshalAs(UnmanagedType.U1)]
+        [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool DELib_PadInputInfo_IsTimingPush(IntPtr pad, uint battleButton, uint time);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_IS_JUST_PUSH", CallingConvention = CallingConvention.Cdecl)]
@@ -17,6 +17,13 @@ namespace DragonEngineLibrary
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_CHECK_BUTTON", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool DELib_PadInputInfo_CheckButton(IntPtr pad, uint battleButton, uint kind, uint coma, int clear_history);
+
+
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_SET_BUTTON", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void DELib_PadInputInfo_SetButton(IntPtr pad, uint battleButton);
+        [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_GETTER_BUTTON", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern long DELib_PadInputInfo_GetButton(IntPtr pad);
+
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_PADINPUTINFO_GETTER_LEVER_FORCE", CallingConvention = CallingConvention.Cdecl)]
         internal static extern float DELib_PadInputInfo_Getter_Lever_Force(IntPtr pad);
@@ -68,7 +75,7 @@ namespace DragonEngineLibrary
 
         public bool IsTimingPush(BattleButtonID battleButton, uint time_tick)
         {
-            return DELib_PadInputInfo_IsTimingPush(Pointer,(uint)battleButton, time_tick);
+            return DELib_PadInputInfo_IsTimingPush(Pointer, (uint)battleButton, time_tick);
         }
 
         public bool IsJustPush(BattleButtonID battleButton)
@@ -80,5 +87,15 @@ namespace DragonEngineLibrary
         {
             return DELib_PadInputInfo_CheckButton(Pointer, (uint)id, kind, coma, clear_history);
         }
+
+        public void SetButton(BattleButtonID id)
+        {
+            DELib_PadInputInfo_SetButton(Pointer, (uint)id);
+        }
+        public long GetButton()
+        {
+            return DELib_PadInputInfo_GetButton(Pointer);
+        }
+
     }
 }
