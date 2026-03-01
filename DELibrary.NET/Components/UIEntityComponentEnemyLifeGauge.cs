@@ -7,7 +7,7 @@ namespace DragonEngineLibrary
     public class UIEntityComponentEnemyLifeGauge : UIEntityComponentLifeGauge
     {
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_CUI_ENTITY_COMPONENT_ENEMY_LIFE_GAUGE_SET_CATEGORY_NAME", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern uint DELib_UIEntityComponentEnemyLifeGauge_SetCategoryName(IntPtr gauge, IntPtr nameUtf8);
+        internal static extern uint DELib_UIEntityComponentEnemyLifeGauge_SetCategoryName(IntPtr gauge, IntPtr name);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_CUI_ENTITY_COMPONENT_ENEMY_LIFE_GAUGE_ATTACH", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint DELib_UIEntityComponentEnemyLifeGauge_Attach(IntPtr character);
@@ -18,7 +18,6 @@ namespace DragonEngineLibrary
         {
             if (string.IsNullOrEmpty(name))
             {
-                byte[] empty = new byte[] { 0 };
                 IntPtr emptyPtr = Marshal.AllocHGlobal(1);
                 Marshal.WriteByte(emptyPtr, 0);
                 try { DELib_UIEntityComponentEnemyLifeGauge_SetCategoryName(Pointer, emptyPtr); }
@@ -26,11 +25,12 @@ namespace DragonEngineLibrary
                 return;
             }
 
-            byte[] utf8 = Encoding.UTF8.GetBytes(name + "\0");
-            IntPtr ptr = Marshal.AllocHGlobal(utf8.Length);
+            byte[] encoded = Encoding.UTF8.GetBytes(name + "\0");
+
+            IntPtr ptr = Marshal.AllocHGlobal(encoded.Length);
             try
             {
-                Marshal.Copy(utf8, 0, ptr, utf8.Length);
+                Marshal.Copy(encoded, 0, ptr, encoded.Length);
                 DELib_UIEntityComponentEnemyLifeGauge_SetCategoryName(Pointer, ptr);
             }
             finally
