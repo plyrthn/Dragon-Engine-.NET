@@ -608,6 +608,7 @@
     <Compile Include="Enums\VirtualKey.cs" />
     <Compile Include="Enums\Yakuza 7\MinigameDragonKartCourseID.cs" />
     <Compile Include="Enums\Yakuza 7\MinigameDragonKartDriverID.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Structs\ExEffectInfo.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Entity\Yakuza 7\FighterManager.cs" />
