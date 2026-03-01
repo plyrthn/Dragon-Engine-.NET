@@ -175,10 +175,7 @@ namespace DragonEngineLibrary
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;  // this is important. Any exception occuring in the logging mechanism can cause a stack overflow exception which triggers the window's own JIT message/App crash message if Win JIT is not available.
 
             Exception ex = e.ExceptionObject as Exception;
-            DragonEngine.Log("*******************FATAL ERROR***************");
-            DragonEngine.Log("Inner Exception:\n" + ex.InnerException);
-            DragonEngine.Log("Message:\n" + ex.Message);
-            DragonEngine.Log("Stacktrace: \n" + ex.StackTrace);
+            DragonEngine.Log($"***************FATAL ERROR***************\nInner Exception:\n{ex.InnerException}\n\nMessage:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}", Logger.Event.FATAL);
             MessageBox((IntPtr)0, "Fatal error! More information available on de_log.txt (where game exe is located). The game will now exit", "Fatal DELibrary Error", 0x00000010);
             Environment.Exit(-1); // exit and avoid WER etc
         }
@@ -190,22 +187,22 @@ namespace DragonEngineLibrary
             Stopwatch initTime = Stopwatch.StartNew();
 
             string libPath = Path.Combine(Library.Root, "Y7Internal.dll");
-            Log("Y7Internal path: " + libPath);
+            DragonEngine.Log($"Y7Internal path: {libPath}");
 
             DragonEngine.Log("Pre Y7Internal.dll import");
 
             if (!File.Exists(libPath))
             {
-                DragonEngine.Log("Y7Internal could not be found!");
+                DragonEngine.Log("Y7Internal could not be found!", Logger.Event.FATAL);
                 return;
             }
 
             Stopwatch loadTime = Stopwatch.StartNew();
 
             if (LoadLibrary(libPath) == IntPtr.Zero)
-                DragonEngine.Log("Failed to load the library! " + "GetLastWinError32:" + Marshal.GetLastWin32Error());
+                DragonEngine.Log($"Failed to load the library! GetLastWinError32: {Marshal.GetLastWin32Error()}", Logger.Event.FATAL);
 
-            DragonEngine.Log("Library load time: " + initTime.Elapsed.TotalSeconds);
+            DragonEngine.Log($"Library load time: {initTime.Elapsed.TotalSeconds}");
 
             /*
             string cimguiPath = Path.Combine(new FileInfo(libPath).Directory.FullName, "cimgui.dll");
@@ -218,7 +215,7 @@ namespace DragonEngineLibrary
 
             DELib_Init();
 
-            DragonEngine.Log("DELib load and init time: " + initTime.Elapsed.TotalSeconds);
+            DragonEngine.Log($"DELib load and init time: {initTime.Elapsed.TotalSeconds}");
 
             Environment.CurrentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -244,22 +241,27 @@ namespace DragonEngineLibrary
             return DELib_IsEngineInitialized();
         }
 
-        static readonly object m_writeLock = new object();
+
+        /// <summary>
+        /// Sends a message to the <see cref="Logger"/>. This will be printed to the console by default, if one is available.
+        /// </summary>
+        /// <param name="value">The contents of the message.</param>
         public static void Log(object value)
         {
             string valueStr = value.ToString();
-            try
-            {
-                File.AppendAllText("de_log.txt", value + "\n");
-            }
-            catch
-            {
-                //lol
-            }
+            Logger.LogEvent(valueStr, Assembly.GetCallingAssembly().GetName().Name, Logger.Event.INFORMATION);
+        }
 
-            Console.WriteLine(valueStr);
-            // DELib_TEMP_CPP_COUT(valueStr + "\n");
-            // File.AppendAllText("dotnetlog.txt", valueStr + "\n");
+
+        /// <summary>
+        /// Sends a message to the <see cref="Logger"/>. This will be printed to the console by default, if one is available.
+        /// </summary>
+        /// <param name="value">The contents of the message.</param>
+        /// <param name="eventType">The event type.</param>
+        public static void Log(object value, Logger.Event eventType)
+        {
+            string valueStr = value.ToString();
+            Logger.LogEvent(valueStr, Assembly.GetCallingAssembly().GetName().Name, eventType);
         }
 
         public static bool IsCursorForcedVisible()
@@ -295,7 +297,7 @@ namespace DragonEngineLibrary
             DELib_RegisterJob(inf.delPointer, jobID, after);
 
 
-            Log("Job for phase " + jobID.ToString() + " registered.");
+            DragonEngine.Log($"Job for phase {jobID} registered.");
         }
 
         public static void RegisterWndProc(Action<IntPtr, int, IntPtr, IntPtr> func)
@@ -374,8 +376,8 @@ namespace DragonEngineLibrary
 
             if (!File.Exists(path))
             {
-                Log(Directory.GetCurrentDirectory());
-                Log(path + " does not exist.");
+                DragonEngine.Log(Directory.GetCurrentDirectory(), Logger.Event.DEBUG);
+                DragonEngine.Log($"{path} does not exist.", Logger.Event.ERROR);
                 return false;
             }
 
@@ -405,7 +407,7 @@ namespace DragonEngineLibrary
                             $"3)Press the unblock button", "Load Error", 0);
                     else
                     {
-                        Log($"Failed to load library, Exception type: {ex.ToString()} Stacktrace:\n" + Environment.StackTrace + "\n" + "Message:\n" + ex.Message + "\nInnerException" + ex.InnerException);
+                        DragonEngine.Log($"Failed to load library, Exception type: {ex.ToString()}\n\nStacktrace:\n{Environment.StackTrace}\n\nMessage:\n {ex.Message}\n\nInnerException:\n{ex.InnerException}", Logger.Event.ERROR);
                         MessageBox(IntPtr.Zero, "Failed to load mod. Information has been logged to de_log.txt (where the exe is)", "Load Error", 0);
                     }
                 }
@@ -421,7 +423,7 @@ namespace DragonEngineLibrary
 
             if (modType == null)
             {
-                Log($"The mod {modName} does not have a valid mod initialization class");
+                DragonEngine.Log($"The mod {modName} does not have a valid mod initialization class", Logger.Event.ERROR);
                 return;
             }
 
@@ -436,10 +438,10 @@ namespace DragonEngineLibrary
                     createdObj.OnModInit();
                 }
                 else
-                    Log("Mod class initialization failed!");
+                    DragonEngine.Log("Mod class initialization failed!", Logger.Event.ERROR);
             }
             else
-                Log(modName + "'s initialization class does not derive from DragonEngineMod!");
+                DragonEngine.Log($"{modName}'s initialization class does not derive from DragonEngineMod!", Logger.Event.ERROR);
 
         }
     }

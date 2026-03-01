@@ -28,7 +28,7 @@ namespace DragonEngineLibrary
         {
             try
             {
-                DragonEngine.Log("\nDragon Engine Library .NET Thread Start");
+                DragonEngine.Log("Dragon Engine Library .NET Thread Start");
                 File.WriteAllText("de_log.txt", "");
 
                 DragonEngine.RefreshOffsets();
@@ -38,12 +38,12 @@ namespace DragonEngineLibrary
                     DragonEngine.RefreshOffsets();
                 }
 
-                DragonEngine.Log("Dragon Engine initialized, initializing the library.\n");
+                DragonEngine.Log("Dragon Engine initialized, initializing the library.");
                 StartEngine();
             }
             catch (Exception ex)
             {
-                DragonEngine.Log("\n\n\nFailed to initialize\nError:" + ex.Message + "\n\nStacktrace:\n" + ex.StackTrace);
+                DragonEngine.Log($"Failed to initialize\nError:{ex.Message}\n\nStacktrace:\n{ex.StackTrace}", Logger.Event.ERROR);
             }
 
 
@@ -52,7 +52,7 @@ namespace DragonEngineLibrary
         private static void StartEngine()
         {
             DragonEngine.Log("Starting initializaton of all mods.");
-            DragonEngine.Log("Path: " + AppDomain.CurrentDomain.BaseDirectory + "\n");
+            DragonEngine.Log($"Path: {AppDomain.CurrentDomain.BaseDirectory}");
 
 
             Thread modsThread = new Thread(LibThread);
@@ -111,13 +111,13 @@ namespace DragonEngineLibrary
                     bool loadRes = DragonEngine.InitializeModLibrary(Path.Combine(directory, dllFile));
 
                     if (loadRes)
-                        DragonEngine.Log("Successfully loaded DLL library in " + new DirectoryInfo(directory).Name);
+                        DragonEngine.Log($"Successfully loaded DLL library in {new DirectoryInfo(directory).Name}");
                     else
-                        DragonEngine.Log("Failed to load DLL library in " + new DirectoryInfo(directory).Name);
+                        DragonEngine.Log($"Failed to load DLL library in {new DirectoryInfo(directory).Name}", Logger.Event.ERROR);
                 }
             }
 
-            DragonEngine.Log("\n\nAll mods have been initialized.");
+            DragonEngine.Log("All mods have been initialized.");
         }
 
 
@@ -166,12 +166,12 @@ namespace DragonEngineLibrary
 
             //Create seperate thread for our C# library
             DragonEngine.Log("DragonEngine Library .Net Main Start");
-            DragonEngine.Log("BaseDirectory: " + BaseDirectory);
-            DragonEngine.Log("RootDirectory: " + Root);
+            DragonEngine.Log($"BaseDirectory: {BaseDirectory}");
+            DragonEngine.Log($"RootDirectory: {Root}");
 
             if(!ShouldInitialize())
             {
-                DragonEngine.Log("There is no need to initialize the library. No compatible mods detected. Aborting.");
+                DragonEngine.Log("There is no need to initialize the library. No compatible mods detected. Aborting.", Logger.Event.WARNING);
                 return;
             }
 
