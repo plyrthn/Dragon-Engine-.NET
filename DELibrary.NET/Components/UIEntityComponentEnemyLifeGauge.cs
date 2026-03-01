@@ -25,15 +25,7 @@ namespace DragonEngineLibrary
                 return;
             }
 
-            byte[] encoded;
-            try
-            {
-                encoded = Encoding.UTF8.GetBytes(name + "\0");
-            }
-            catch
-            {
-                encoded = Encoding.ASCII.GetBytes(name + "\0");
-            }
+            byte[] encoded = Encoding.UTF8.GetBytes(name + "0");
 
             IntPtr ptr = Marshal.AllocHGlobal(encoded.Length);
             try

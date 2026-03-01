@@ -145,20 +145,7 @@ namespace DragonEngineLibrary
                 return;
             }
 
-            byte[] encoded;
-            try
-            {
-                encoded = System.Text.Encoding.UTF8.GetBytes(text + "\0");
-            }
-            catch
-            {
-                encoded = System.Text.Encoding.ASCII.GetBytes(text + "\0");
-            }
-
-            IntPtr ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(encoded.Length);
-            try
-            {
-                System.Runtime.InteropServices.Marshal.Copy(encoded, 0, ptr, encoded.Length);
+            byte[] encoded = System.Text.Encoding.UTF8.GetBytes(text + "0");
                 DELib_UIHandleBase_SetText(Handle, ptr);
             }
             finally
