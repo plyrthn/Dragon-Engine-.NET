@@ -28,7 +28,7 @@ namespace DragonEngineLibrary
         internal static extern void DELib_UIHandleBase_SetHeight(ulong handle, float height);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_UI_HANDLE_CBASE_SET_TEXT", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void DELib_UIHandleBase_SetText(ulong handle, string txt);
+        internal static extern void DELib_UIHandleBase_SetText(ulong handle, IntPtr text);
 
         [DllImport("Y7Internal.dll", EntryPoint = "LIB_UI_HANDLE_CBASE_SET_FRAME", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void DELib_UIHandleBase_SetFrame(ulong handle, float frame);
@@ -136,7 +136,35 @@ namespace DragonEngineLibrary
 
         public void SetText(string text)
         {
-            DELib_UIHandleBase_SetText(Handle,text);
+            if (string.IsNullOrEmpty(text))
+            {
+                IntPtr emptyPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(1);
+                System.Runtime.InteropServices.Marshal.WriteByte(emptyPtr, 0);
+                try { DELib_UIHandleBase_SetText(Handle, emptyPtr); }
+                finally { System.Runtime.InteropServices.Marshal.FreeHGlobal(emptyPtr); }
+                return;
+            }
+
+            byte[] encoded;
+            try
+            {
+                encoded = System.Text.Encoding.UTF8.GetBytes(text + "\0");
+            }
+            catch
+            {
+                encoded = System.Text.Encoding.ASCII.GetBytes(text + "\0");
+            }
+
+            IntPtr ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(encoded.Length);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.Copy(encoded, 0, ptr, encoded.Length);
+                DELib_UIHandleBase_SetText(Handle, ptr);
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
+            }
         }
 
         public void SetFrame(float frame)
