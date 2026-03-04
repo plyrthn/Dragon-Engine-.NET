@@ -1,0 +1,95 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-cimgui:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build cimgui.dll
+        run: |
+          cd deps/dx11-hook
+          mkdir build\x64
+          cd build\x64
+          cmake -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ..\..
+          cmake --build . --config Release
+
+      - name: Upload cimgui.dll
+        uses: actions/upload-artifact@v4
+        with:
+          name: cimgui
+          path: deps/dx11-hook/build/x64/Release/cimgui.dll
+
+  build:
+    needs: build-cimgui
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration:
+          - YLAD Release
+          - Gaiden Release
+          - Infinite Wealth Release
+          - Lost Judgment Release
+          - Release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        run: nuget restore Y7Internal.NET.sln
+
+      - name: Build
+        run: msbuild Y7Internal.NET.sln /p:Configuration="${{ matrix.configuration }}" /p:Platform=x64 /m
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.configuration }}
+          path: DELibrary.NET/bin/x64/${{ matrix.configuration }}/
+
+  release:
+    needs: [build-cimgui, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Zip artifacts
+        run: |
+          cd artifacts
+          for dir in */; do
+            name="${dir%/}"
+            zip -r "../${name}.zip" "$dir"
+          done
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          TAG="build-${SHORT_SHA}"
+          gh release create "$TAG" \
+            --title "Build ${SHORT_SHA}" \
+            --prerelease \
+            --generate-notes \
+            *.zip

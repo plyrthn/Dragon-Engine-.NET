@@ -7,9 +7,13 @@
     <AssemblyName>DELibrary.NET</AssemblyName>
     <LangVersion>7.3</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Deterministic>true</Deterministic>
+    <Deterministic>false</Deterministic>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Description>Dragon Engine .NET Library</Description>
+    <Product>DELibrary.NET</Product>
+    <Copyright>Copyright 2022</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -241,5 +245,27 @@
   <ItemGroup>
     <Content Include="Binary\Retail\Y7Internal.dll" />
   </ItemGroup>
+
+  <!-- ============================================================ -->
+  <!-- Embed git hash into AssemblyInformationalVersion             -->
+  <!-- ============================================================ -->
+  <Target Name="SetGitInfo" BeforeTargets="CoreCompile">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash" />
+    </Exec>
+    <Exec Command="git remote get-url origin" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitRemoteUrl" />
+    </Exec>
+    <PropertyGroup>
+      <GitHash Condition="'$(GitHash)' == ''">unknown</GitHash>
+      <GitAuthor Condition="'$(GitRemoteUrl)' != ''">$([System.Text.RegularExpressions.Regex]::Match($(GitRemoteUrl), '[:/]([^/]+)/[^/]+(?:\.git)?$').Groups[1].Value)</GitAuthor>
+      <GitAuthor Condition="'$(GitAuthor)' == ''">unknown</GitAuthor>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)GitInfo.g.cs" Overwrite="true"
+      Lines="[assembly: System.Reflection.AssemblyInformationalVersion(&quot;$(GitHash)&quot;)];[assembly: System.Reflection.AssemblyCompany(&quot;$(GitAuthor)&quot;)]" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)GitInfo.g.cs" />
+    </ItemGroup>
+  </Target>
 
 </Project>
