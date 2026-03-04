@@ -136,27 +136,11 @@ namespace DragonEngineLibrary
 
         public void SetText(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                IntPtr emptyPtr = Marshal.AllocHGlobal(1);
-                Marshal.WriteByte(emptyPtr, 0);
-                try { DELib_UIHandleBase_SetText(Handle, emptyPtr); }
-                finally { Marshal.FreeHGlobal(emptyPtr); }
-                return;
-            }
-
-            byte[] encoded = System.Text.Encoding.UTF8.GetBytes(text + "\0");
-
+            byte[] encoded = System.Text.Encoding.UTF8.GetBytes((text ?? "") + "\0");
             IntPtr ptr = Marshal.AllocHGlobal(encoded.Length);
-            try
-            {
-                Marshal.Copy(encoded, 0, ptr, encoded.Length);
-                DELib_UIHandleBase_SetText(Handle, ptr);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(ptr);
-            }
+            Marshal.Copy(encoded, 0, ptr, encoded.Length);
+            DELib_UIHandleBase_SetText(Handle, ptr);
+            Marshal.FreeHGlobal(ptr);
         }
 
         public void SetFrame(float frame)
