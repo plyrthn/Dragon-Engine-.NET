@@ -236,9 +236,11 @@ namespace DragonEngineLibrary
             return mtx;
         }
 
+#if YLAD_AND_UP || YK2
         public T GetComponent<T>(ECSlotID slot) where T : EntityComponent, new()
         {
             return EntityComponentMap.GetComponent<T>(slot);
         }
+#endif
     }
 }
