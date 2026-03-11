@@ -18,6 +18,7 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <Platforms>AnyCPU;x64</Platforms>
+    <Configurations>Debug;Release;YLAD Debug;YLAD Release;Infinite Wealth Debug;Infinite Wealth Release;Gaiden Debug;Gaiden Release;Lost Judgment Debug;Lost Judgment Release;Yakuza 6 Release</Configurations>
   </PropertyGroup>
 
   <!-- ============================================================ -->
