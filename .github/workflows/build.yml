@@ -43,7 +43,7 @@ jobs:
           restore-keys: nuget-
 
       - name: Restore packages
-        run: nuget restore Y7Internal.NET.sln
+        run: nuget restore DragonEngine.sln
 
       - name: Build all configurations
         run: |
@@ -57,7 +57,7 @@ jobs:
           $failed = @()
           foreach ($cfg in $configs) {
             Write-Host "Building $cfg..."
-            msbuild Y7Internal.NET.sln /p:Configuration="$cfg" /p:Platform=x64 /m
+            msbuild DragonEngine.sln /p:Configuration="$cfg" /p:Platform=x64 /m
             if ($LASTEXITCODE -ne 0) { $failed += $cfg }
           }
           if ($failed.Count -gt 0) {
