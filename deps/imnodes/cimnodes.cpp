@@ -31,11 +31,11 @@ CIMGUI_API void IO_destroy(IO* self)
 {
     IM_DELETE(self);
 }
-CIMGUI_API Style* Style_Style(void)
+CIMGUI_API Style* ImNodesStyle_ImNodesStyle(void)
 {
     return IM_NEW(Style)();
 }
-CIMGUI_API void Style_destroy(Style* self)
+CIMGUI_API void ImNodesStyle_destroy(Style* self)
 {
     IM_DELETE(self);
 }

@@ -127,8 +127,8 @@ CIMGUI_API LinkDetachWithModifierClick* LinkDetachWithModifierClick_LinkDetachWi
 CIMGUI_API void LinkDetachWithModifierClick_destroy(LinkDetachWithModifierClick* self);
 CIMGUI_API IO* IO_IO(void);
 CIMGUI_API void IO_destroy(IO* self);
-CIMGUI_API Style* Style_Style(void);
-CIMGUI_API void Style_destroy(Style* self);
+CIMGUI_API Style* ImNodesStyle_ImNodesStyle(void);
+CIMGUI_API void ImNodesStyle_destroy(Style* self);
 CIMGUI_API void imnodes_SetImGuiContext(ImGuiContext* ctx);
 CIMGUI_API Context* imnodes_CreateContext(void);
 CIMGUI_API void imnodes_DestroyContext(Context* ctx);
