@@ -25,11 +25,10 @@ DELibrary.NET/              Main library (net48, x64)
   Structs/                  Data structures, math types
 DELibrary.NET.Loader/       Standalone loader utility
 deps/
-  dx11-hook/                DX11/DX12 Present hook + ImGui init
-  ImGui.NET-nativebuild/    cimgui source (submodule)
-  cimplot/                  ImPlot C bindings (submodule)
-  cimguizmo/                ImGuizmo C bindings (submodule)
-  cimnodes/                 imnodes C bindings (submodule)
+  dx11-hook/                DX11/DX12 Present hook source + prebuilt dehook.dll
+  hexa-native/              Hexa.NET.ImGui 1.92.4 prebuilt DLLs + import libs
+  imgui-src/                imgui 1.92.4 headers + backend sources (for building hook)
+  cimguizmo/                ImGuizmo C bindings (submodule, headers only)
   minhook/                  MinHook library (submodule)
 ```
 
@@ -43,22 +42,41 @@ nuget restore DragonEngine.sln
 msbuild DragonEngine.sln /p:Configuration="YLAD Release" /p:Platform=x64
 ```
 
-### cimgui.dll
+### Native DLLs
 
-Requires CMake and MSVC (C++ workload). Builds cimgui + cimplot + cimguizmo + cimnodes + DX11/DX12 backends + Present hook + MinHook, all statically linked into one DLL.
+The prebuilt DLLs are committed to the repo — no build step required for normal use:
+
+| File | Contents |
+|------|----------|
+| `deps/dx11-hook/dehook.dll` | Present hook + imgui 1.92.4 backends + MinHook |
+| `deps/hexa-native/cimgui.dll` | ImGui 1.92.4 C bindings (Hexa.NET.ImGui) |
+| `deps/hexa-native/cimguizmo.dll` | ImGuizmo C bindings |
+| `deps/hexa-native/cimnodes.dll` | imnodes C bindings |
+| `deps/hexa-native/cimplot.dll` | ImPlot C bindings |
+| `deps/hexa-native/cimplot3d.dll` | ImPlot3D C bindings |
+
+All six DLLs must be deployed alongside `DELibrary.NET.exe`.
+
+### Rebuilding dehook.dll
+
+Only needed if you modify `dx11_hook.cpp`. Requires CMake and MSVC.
 
 ```bash
 cd deps/dx11-hook
-mkdir build\x64 && cd build\x64
-cmake -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ..\..
+mkdir build && cd build
+cmake -G "Visual Studio 17 2022" -A x64 ^
+  -DIMGUI_SRC_DIR=../../imgui-src ^
+  -DHEXA_DIR=../../hexa-native ^
+  -DMINHOOK_DIR=../../minhook ^
+  -DCIMGUIZMO_DIR=../../cimguizmo ^
+  -DHOOK_SRC_DIR=.. ^
+  ../CMakeLists_prebuilt.txt
 cmake --build . --config Release
 ```
 
-Output: `deps/dx11-hook/build/x64/Release/cimgui.dll`
+Output: `build/Release/dehook.dll`
 
-### Custom exports
-
-On top of stock cimgui, cimplot, cimguizmo, and cimnodes exports:
+### dehook.dll exports
 
 | Export | Description |
 |--------|-------------|
@@ -72,19 +90,19 @@ On top of stock cimgui, cimplot, cimguizmo, and cimnodes exports:
 
 ## ImGui / ImGuizmo Usage
 
-The DX hook automatically calls `ImGui::NewFrame()` and `ImGuizmo::BeginFrame()` each frame. Register your render callback via C#:
+`ImGui.Init()` loads all six DLLs in the correct order and installs the Present hook. The hook syncs its ImGui context into `cimgui.dll` so C# P/Invoke calls land in the right place.
 
 ```csharp
 using DragonEngineLibrary.Advanced;
 
-ImGui.Init();  // loads cimgui.dll and installs the DX hook
+ImGui.Init();
 ImGui.RegisterUIUpdate(() =>
 {
     // your ImGui drawing code here
 });
 ```
 
-ImGuizmo bindings are in their own namespace to avoid conflicts:
+`ImGuizmo::BeginFrame()` is called automatically each frame. Bindings are in their own namespace:
 
 ```csharp
 using DragonEngineLibrary.ImGuizmoNET;
@@ -97,4 +115,4 @@ ImGuizmo.Manipulate(ref view.M11, ref projection.M11, OPERATION.TRANSLATE, MODE.
 
 ## CI
 
-Builds run on every push to `main`. All configurations are built in a single job with cimgui and NuGet caching. Artifacts are zipped and attached to a GitHub release.
+Builds run on every push to `main`. All configurations are built in a single job with NuGet caching. Artifacts (per-game DLLs + hook DLLs) are zipped and attached to a GitHub release.
