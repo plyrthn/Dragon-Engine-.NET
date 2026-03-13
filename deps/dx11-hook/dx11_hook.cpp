@@ -646,7 +646,12 @@ __declspec(dllexport) void* AddFontFromMemoryTTF(void* font_data, int font_size,
     if (!ctx) return nullptr;
     ImFontAtlas* atlas = ImGui::GetIO().Fonts;
     if (!atlas) return nullptr;
-    return (void*)atlas->AddFontFromMemoryTTF(font_data, font_size, size_pixels, (ImFontConfig*)font_cfg, (const ImWchar*)glyph_ranges);
+    // Copy caller's config (or use defaults) and force FontDataOwnedByAtlas=false
+    // so ImGui does not call free() on the buffer - the caller owns its memory.
+    ImFontConfig cfg;
+    if (font_cfg) cfg = *(ImFontConfig*)font_cfg;
+    cfg.FontDataOwnedByAtlas = false;
+    return (void*)atlas->AddFontFromMemoryTTF(font_data, font_size, size_pixels, &cfg, (const ImWchar*)glyph_ranges);
 }
 
 // compat shims for ImGui.NET v1.86 managed bindings (imgui 1.90+ renames/removals)
