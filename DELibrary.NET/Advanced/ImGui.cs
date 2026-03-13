@@ -68,6 +68,7 @@ namespace DragonEngineLibrary.Advanced
                 DragonEngine.Log("[ImGui] Loading cimgui.dll");
                 IntPtr h = DragonEngine.LoadLibrary(cimguiPath);
                 DragonEngine.Log($"[ImGui] cimgui.dll handle: {h}");
+                VerifyModules(h);
             }
 
 #if !IW_AND_UP
@@ -77,6 +78,24 @@ namespace DragonEngineLibrary.Advanced
 #else
             DragonEngine.Log("[ImGui] Skipping DXHook.Init() (IW_AND_UP)");
 #endif
+        }
+
+        // Check that each compiled-in module exported at least one known symbol
+        private static void VerifyModules(IntPtr hCimgui)
+        {
+            Check(hCimgui, "core",     "igBegin");
+            Check(hCimgui, "hook",     "InitDX11Hook");
+            Check(hCimgui, "ImGuizmo", "ImGuizmo_BeginFrame");
+            Check(hCimgui, "implot",   "ImPlot_BeginPlot");
+            Check(hCimgui, "imnodes",  "imnodes_BeginNodeEditor");
+            // legacy compat alias
+            Check(hCimgui, "igGetIO compat", "igGetIO");
+        }
+
+        private static void Check(IntPtr hModule, string label, string symbol)
+        {
+            bool ok = DXHook.GetProcAddress(hModule, symbol) != IntPtr.Zero;
+            DragonEngine.Log($"[ImGui] {(ok ? "✓" : "✗")} {label} ({symbol})");
         }
     }
 }
