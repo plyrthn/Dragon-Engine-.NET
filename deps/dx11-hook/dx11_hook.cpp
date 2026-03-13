@@ -14,36 +14,6 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-// cimgui.dll context/allocator sync - so C# P/Invoke to cimgui.dll works on same context
-typedef ImGuiContext* (*FnGetCurrentContext)();
-typedef void         (*FnSetCurrentContext)(ImGuiContext*);
-typedef void         (*FnGetAllocatorFunctions)(ImGuiMemAllocFunc*, ImGuiMemFreeFunc*, void**);
-typedef void         (*FnSetAllocatorFunctions)(ImGuiMemAllocFunc, ImGuiMemFreeFunc, void*);
-
-static void SyncContextIntoModule(HMODULE h, ImGuiContext* ctx, ImGuiMemAllocFunc allocFn, ImGuiMemFreeFunc freeFn, void* userData)
-{
-    if (!h) return;
-    auto fnSetAlloc = (FnSetAllocatorFunctions)GetProcAddress(h, "igSetAllocatorFunctions");
-    if (fnSetAlloc) fnSetAlloc(allocFn, freeFn, userData);
-    auto fnSetCtx = (FnSetCurrentContext)GetProcAddress(h, "igSetCurrentContext");
-    if (fnSetCtx) fnSetCtx(ctx);
-}
-
-static void SyncContextWithCimgui(ImGuiContext* ctx)
-{
-    // Get our allocator functions (default malloc/free)
-    ImGuiMemAllocFunc allocFn; ImGuiMemFreeFunc freeFn; void* userData;
-    ImGui::GetAllocatorFunctions(&allocFn, &freeFn, &userData);
-
-    // Sync context + allocators into every Hexa DLL so their imgui instances
-    // all share our context. Required for C# P/Invoke and ImGuizmo_BeginFrame.
-    static const char* hexaDlls[] = {
-        "cimgui.dll", "cimguizmo.dll", "cimnodes.dll", "cimplot.dll", "cimplot3d.dll"
-    };
-    for (auto name : hexaDlls)
-        SyncContextIntoModule(GetModuleHandleA(name), ctx, allocFn, freeFn, userData);
-}
-
 typedef HRESULT(WINAPI* PFN_Present)(IDXGISwapChain*, UINT, UINT);
 typedef HRESULT(WINAPI* PFN_ResizeBuffers)(IDXGISwapChain*, UINT, UINT, UINT, DXGI_FORMAT, UINT);
 typedef void(WINAPI* PFN_ExecuteCommandLists)(ID3D12CommandQueue*, UINT, ID3D12CommandList* const*);
@@ -209,7 +179,6 @@ static void WINAPI HookedExecuteCommandLists(ID3D12CommandQueue* queue, UINT num
 
 // ---- Common ----
 
-// In 1.92.x the declaration is in a #if 0 block; forward-declare it here
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 static LRESULT WINAPI HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -248,8 +217,7 @@ static bool InitDX11(IDXGISwapChain* swapChain)
     swapChain->GetDesc(&desc);
     HookLog("[DXHook] DX11 init - HWND=%p, %ux%u\n", desc.OutputWindow, desc.BufferDesc.Width, desc.BufferDesc.Height);
 
-    ImGuiContext* ctx = ImGui::CreateContext();
-    SyncContextWithCimgui(ctx);
+    ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
@@ -302,15 +270,12 @@ static bool InitDX12(IDXGISwapChain* swapChain)
     if (!CreateDX12RenderTargets(swapChain))
         return false;
 
-    ImGuiContext* ctx = ImGui::CreateContext();
-    SyncContextWithCimgui(ctx);
+    ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     ImGui_ImplWin32_Init(desc.OutputWindow);
-    ImGui_ImplDX12_Init(g_Device12,
-        (int)g_BufferCount12,
-        DXGI_FORMAT_R8G8B8A8_UNORM,
+    ImGui_ImplDX12_Init(g_Device12, (int)g_BufferCount12, DXGI_FORMAT_R8G8B8A8_UNORM,
         g_SrvDescHeap12,
         g_SrvDescHeap12->GetCPUDescriptorHandleForHeapStart(),
         g_SrvDescHeap12->GetGPUDescriptorHandleForHeapStart());

@@ -12,9 +12,3 @@ enum ImGuiKeyModFlags_ {
     ImGuiKeyModFlags_Super = ImGuiMod_Super
 };
 #endif
-
-// Renamed in 1.87
-namespace ImGui {
-    inline void CaptureMouseFromApp(bool want = true) { SetNextFrameWantCaptureMouse(want); }
-    inline void CaptureKeyboardFromApp(bool want = true) { SetNextFrameWantCaptureKeyboard(want); }
-}

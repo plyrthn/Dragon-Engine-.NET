@@ -54,19 +54,10 @@ namespace DragonEngineLibrary.Advanced
         public static void Init()
         {
             string libPath = Path.Combine(Library.Root, "Y7Internal.dll");
-            string dir = new FileInfo(libPath).Directory.FullName;
+            string cimguiPath = Path.Combine(new FileInfo(libPath).Directory.FullName, "cimgui.dll");
 
-            // Load Hexa's imgui DLLs before dehook.dll so they resolve correctly
-            foreach (string name in new[] { "cimgui.dll", "cimguizmo.dll", "cimnodes.dll", "cimplot.dll", "cimplot3d.dll" })
-            {
-                string p = Path.Combine(dir, name);
-                if (File.Exists(p))
-                    DragonEngine.LoadLibrary(p);
-            }
-
-            string dehookPath = Path.Combine(dir, "dehook.dll");
-            if (File.Exists(dehookPath))
-                DragonEngine.LoadLibrary(dehookPath);
+            if (File.Exists(cimguiPath))
+                DragonEngine.LoadLibrary(cimguiPath);
 
 #if !IW_AND_UP
             DXHook.Init();
