@@ -1,0 +1,104 @@
+# "Cancel previous pipelines" must be enabled in Woodpecker repo settings
+# (Settings -> Cancel previous pipelines) to get cancel-on-new-push behavior.
+labels:
+  ci.woodpecker.concurrent: "1"
+
+when:
+  - event: push
+    branch: [main, "fix/*", "feature/*"]
+  - event: tag
+    ref: "refs/tags/v*"
+  - event: manual
+
+steps:
+  - name: build
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    commands:
+      - dotnet restore DragonEngine.sln
+      - dotnet build DragonEngine.sln -c "YLAD Release" -p:Platform=x64 --no-restore
+      - dotnet build DragonEngine.sln -c "Gaiden Release" -p:Platform=x64 --no-restore
+      - dotnet build DragonEngine.sln -c "Infinite Wealth Release" -p:Platform=x64 --no-restore
+      - dotnet build DragonEngine.sln -c "Lost Judgment Release" -p:Platform=x64 --no-restore
+      - dotnet build DragonEngine.sln -c "Release" -p:Platform=x64 --no-restore
+
+  - name: package
+    image: alpine
+    commands:
+      - apk add --no-cache zip
+      - mkdir -p release
+      - |
+        for cfg in "YLAD Release" "Gaiden Release" "Infinite Wealth Release" "Lost Judgment Release" "Release"; do
+          src="DELibrary.NET/bin/x64/$cfg"
+          [ -d "$src" ] && zip -j "release/$cfg.zip" "$src"/* || true
+        done
+      - zip -j release/hook-dlls.zip deps/prebuilt-libs/cimgui.dll
+
+  - name: changelog
+    image: alpine/git
+    commands:
+      - |
+        SHORT_SHA=$(echo $CI_COMMIT_SHA | cut -c1-7)
+        echo "## Changes" > changelog.md
+        echo "" >> changelog.md
+        PREV_TAG=$(git tag --sort=-creatordate | head -1)
+        if [ -n "$PREV_TAG" ]; then
+          git log --format="- %s" "$PREV_TAG"..HEAD >> changelog.md
+        else
+          git log --format="- %s" -10 >> changelog.md
+        fi
+        echo "" >> changelog.md
+        echo "---" >> changelog.md
+        echo "Build from \`$SHORT_SHA\`" >> changelog.md
+    when:
+      - branch: main
+        event: push
+      - event: tag
+        ref: "refs/tags/v*"
+
+  - name: release
+    image: alpine
+    environment:
+      GHCR_TOKEN:
+        from_secret: ghcr_token
+    commands:
+      - apk add --no-cache curl jq
+      - |
+        BODY=$(cat changelog.md)
+        if [ "$CI_PIPELINE_EVENT" = "tag" ]; then
+          TAG="$CI_COMMIT_TAG"
+          NAME="$CI_COMMIT_TAG"
+          PRERELEASE=false
+        else
+          SHORT_SHA=$(echo $CI_COMMIT_SHA | cut -c1-7)
+          TAG="build-$SHORT_SHA"
+          NAME="Build $SHORT_SHA"
+          PRERELEASE=true
+        fi
+        jq -n --arg tag "$TAG" --arg sha "$CI_COMMIT_SHA" --arg name "$NAME" --arg body "$BODY" \
+          --argjson pre "$PRERELEASE" \
+          '{tag_name: $tag, target_commitish: $sha, name: $name, body: $body, prerelease: $pre}' | \
+          curl -sS -X POST \
+            -H "Authorization: token $GHCR_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- \
+            "https://api.github.com/repos/$CI_REPO/releases" > release.json
+        UPLOAD_URL=$(jq -r '.upload_url | sub("{.*}";"")' release.json)
+        if [ -z "$UPLOAD_URL" ] || [ "$UPLOAD_URL" = "null" ]; then
+          echo "Release creation failed:"
+          cat release.json
+          exit 1
+        fi
+        for f in release/*.zip; do
+          [ -f "$f" ] || continue
+          FNAME=$(basename "$f" | sed 's/ /%20/g')
+          curl -sS -X POST \
+            -H "Authorization: token $GHCR_TOKEN" \
+            -H "Content-Type: application/zip" \
+            --data-binary "@$f" \
+            "$UPLOAD_URL?name=$FNAME"
+        done
+    when:
+      - branch: main
+        event: push
+      - event: tag
+        ref: "refs/tags/v*"
