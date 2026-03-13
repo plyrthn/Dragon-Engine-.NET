@@ -5,22 +5,22 @@ project(cimgui)
 set(CMAKE_CXX_STANDARD 11)
 
 if(NOT DEFINED IMGUI_SRC_DIR)
-    set(IMGUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../ImGui.NET-nativebuild/cimgui/imgui)
+    set(IMGUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cimgui/imgui)
 endif()
 if(NOT DEFINED MINHOOK_DIR)
     set(MINHOOK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../minhook)
 endif()
 if(NOT DEFINED CIMGUI_DIR)
-    set(CIMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../ImGui.NET-nativebuild/cimgui)
+    set(CIMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cimgui)
 endif()
 if(NOT DEFINED CIMGUIZMO_DIR)
-    set(CIMGUIZMO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cimguizmo)
+    set(CIMGUIZMO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../ImGuizmo)
 endif()
 if(NOT DEFINED CIMPLOT_DIR)
-    set(CIMPLOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cimplot)
+    set(CIMPLOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../implot)
 endif()
 if(NOT DEFINED CIMNODES_DIR)
-    set(CIMNODES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cimnodes)
+    set(CIMNODES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../imnodes)
 endif()
 if(NOT DEFINED HOOK_SRC_DIR)
     set(HOOK_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -52,15 +52,15 @@ add_library(cimgui SHARED
     # cimgui C wrappers
     ${CIMGUI_DIR}/cimgui.cpp
     # ImGuizmo
-    ${CIMGUIZMO_DIR}/ImGuizmo/ImGuizmo.cpp
+    ${CIMGUIZMO_DIR}/ImGuizmo.cpp
     ${CIMGUIZMO_DIR}/cimguizmo.cpp
     # implot
-    ${CIMPLOT_DIR}/implot/implot.cpp
-    ${CIMPLOT_DIR}/implot/implot_demo.cpp
-    ${CIMPLOT_DIR}/implot/implot_items.cpp
+    ${CIMPLOT_DIR}/implot.cpp
+    ${CIMPLOT_DIR}/implot_demo.cpp
+    ${CIMPLOT_DIR}/implot_items.cpp
     ${CIMPLOT_DIR}/cimplot.cpp
     # imnodes
-    ${CIMNODES_DIR}/imnodes/imnodes.cpp
+    ${CIMNODES_DIR}/imnodes.cpp
     ${CIMNODES_DIR}/cimnodes.cpp
     # DX hook
     ${HOOK_SRC_DIR}/dx11_hook.cpp
@@ -71,11 +71,8 @@ target_include_directories(cimgui PRIVATE
     ${IMGUI_SRC_DIR}/backends
     ${CIMGUI_DIR}
     ${CIMGUIZMO_DIR}
-    ${CIMGUIZMO_DIR}/ImGuizmo
     ${CIMPLOT_DIR}
-    ${CIMPLOT_DIR}/implot
     ${CIMNODES_DIR}
-    ${CIMNODES_DIR}/imnodes
     ${MINHOOK_DIR}/include
 )
 
@@ -83,12 +80,12 @@ target_compile_definitions(cimgui PRIVATE IMGUI_DEFINE_MATH_OPERATORS CIMGUI_VAR
 
 # Force-include compat header for addon sources that use renamed 1.87 API
 foreach(src
-    ${CIMGUIZMO_DIR}/ImGuizmo/ImGuizmo.cpp
+    ${CIMGUIZMO_DIR}/ImGuizmo.cpp
     ${CIMGUIZMO_DIR}/cimguizmo.cpp
-    ${CIMPLOT_DIR}/implot/implot.cpp
-    ${CIMPLOT_DIR}/implot/implot_items.cpp
+    ${CIMPLOT_DIR}/implot.cpp
+    ${CIMPLOT_DIR}/implot_items.cpp
     ${CIMPLOT_DIR}/cimplot.cpp
-    ${CIMNODES_DIR}/imnodes/imnodes.cpp
+    ${CIMNODES_DIR}/imnodes.cpp
     ${CIMNODES_DIR}/cimnodes.cpp
 )
     set_source_files_properties(${src} PROPERTIES
